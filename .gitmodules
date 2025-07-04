@@ -4,3 +4,9 @@
 [submodule "lib/imgui"]
 	path = lib/imgui
 	url = https://github.com/ocornut/imgui
+[submodule "KeyBindHandler"]
+	path = lib/KeyBindHandler
+	url = https://github.com/Quark3e/KeyBindHandler.git
+[submodule "lib/Pos2d"]
+	path = lib/Pos2d
+	url = https://github.com/Quark3e/Pos2d.git
