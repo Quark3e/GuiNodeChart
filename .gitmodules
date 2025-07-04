@@ -1,0 +1,3 @@
+[submodule "lib/LazyDiyDict"]
+	path = lib/LazyDiyDict
+	url = https://github.com/Quark3e/LazyDiyDict
