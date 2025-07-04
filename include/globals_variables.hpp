@@ -8,8 +8,8 @@
 
 #include "globals_includes.hpp"
 #include "extra_imgui.hpp"
-#include "keyBind_handler.hpp"
-#include "diy_dictionary.hpp"
+#include "KeyBindHandler.hpp"
+#include "LazyDiyDict.hpp"
 #if _WIN32
 #include <imgui\addons\imguifilesystem\dirent_portable.h>
 #else
@@ -185,7 +185,7 @@ ImVec2 dim__win_timeline();
 extern pressed_key__struct      guiKeys;
 /// @brief keyBind function called during master close keyBind call.
 void _keyBind__Master_Close();
-extern DIY_KBH::keyBind_handler keyBinds;
+extern DIY_KBH::KeyBindHandler keyBinds;
 
 extern bool lockMove_screen;
 extern bool lockMove_node;

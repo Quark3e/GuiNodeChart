@@ -14,9 +14,9 @@
 #include <vector>
 #include <list>
 // #include <useful.hpp>
-#include <diy_dictionary.hpp>
+#include <LazyDiyDict.hpp>
 
-#include <keyBind_handler.hpp>
+#include <KeyBindHandler.hpp>
 
 
 struct pressed_key__struct {

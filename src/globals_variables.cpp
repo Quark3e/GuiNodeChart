@@ -196,7 +196,7 @@ void _keyBind__Master_Close() {
 void _keyBind__MouseLeft() {
 
 }
-DIY_KBH::keyBind_handler keyBinds({
+DIY_KBH::KeyBindHandler keyBinds({
     {"undo",    {ImGuiKey_ReservedForModCtrl, ImGuiKey_LeftCtrl, ImGuiKey_Z}},
     {"redo",    {ImGuiKey_ReservedForModCtrl, ImGuiKey_LeftCtrl, ImGuiKey_ReservedForModShift, ImGuiKey_LeftShift, ImGuiKey_Z}},
     {"Master Close",{ImGuiKey_ReservedForModCtrl, ImGuiKey_LeftCtrl, ImGuiKey_W}, _keyBind__Master_Close},

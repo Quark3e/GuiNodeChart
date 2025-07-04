@@ -33,13 +33,13 @@
 #include <imgui.h>
 #include <misc/cpp/imgui_stdlib.h>
 #include <imgui_impl_allegro5.h>
-#include <addons/imguidatechooser/imguidatechooser.h>
+#include <imguidatechooser/imguidatechooser.h>
 
 
-#include <useful.hpp>
+// #include <useful.hpp>
 #include <science/math/Bezier curve/bezier_curve.hpp>
-#include <jsonParser/jsonParser.hpp>
-#include <diy_dictionary.hpp>
+#include <JsonParser.hpp>
+#include <LazyDiyDict.hpp>
 
 
 #include "gui_nodeChart.hpp"
