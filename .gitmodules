@@ -10,3 +10,6 @@
 [submodule "lib/Pos2d"]
 	path = lib/Pos2d
 	url = https://github.com/Quark3e/Pos2d.git
+[submodule "lib/JsonParser"]
+	path = lib/JsonParser
+	url = https://github.com/Quark3e/JsonParser.git
