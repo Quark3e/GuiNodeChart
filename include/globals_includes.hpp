@@ -37,7 +37,7 @@
 
 
 // #include <useful.hpp>
-#include <science/math/Bezier curve/bezier_curve.hpp>
+// #include <science/math/Bezier curve/bezier_curve.hpp>
 #include <JsonParser.hpp>
 #include <LazyDiyDict.hpp>
 
