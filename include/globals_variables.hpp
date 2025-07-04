@@ -41,7 +41,7 @@ extern unsigned int __PROGRAM_FRAMES;
 
 // extern bool opt__enable_grid;
 
-extern DIY::typed_dict<std::string, DIY::typed_dict<std::string, bool>> _SETTINGS;
+extern LazyDiyDict::typed_dict<std::string, LazyDiyDict::typed_dict<std::string, bool>> _SETTINGS;
 
 
 extern int __GLOBAL_FLAGS__WIN_RESIZED; //whether the main program window has been resized: 0 - false
@@ -90,7 +90,7 @@ extern std::string programCWD;
 extern std::string __dir_programRoot;
 extern std::string __dir_saveFiles;
 
-extern DIY::typed_dict<std::string, nc_proj> projects;
+extern LazyDiyDict::typed_dict<std::string, nc_proj> projects;
 
 /**
  * Pointer to main "global" ImDrawList for the currently show projects draw window

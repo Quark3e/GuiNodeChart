@@ -40,14 +40,14 @@ struct pressed_key__struct {
      *   - `<0`  key has occurred but there has been the integer number of history instances without that key. If it's less than ``holding_keys__allowed_gaps`` then it'll be erased from this dict.
      *   - `>0`  key has occurred the integer value number of history instances. If this is more or equal to `holding_keys__holdingLim` then it'll be added to `holding_keys` vector
      */
-    DIY::typed_dict<int, int> __refDict_holding_keys_occur;
+    LazyDiyDict::typed_dict<int, int> __refDict_holding_keys_occur;
     /**
      * Helper directory that holds the direction of the latest value change in `__refDict_holding_keys_occur` for given keys.
      *  - `<0`  newest key value is smaller than previous
      *  - `=0`  newest key value is same as previous
      *  - `>0`  newest key value is bigger than previous
      */
-    DIY::typed_dict<int, int> __refDict_keyChangeDir;
+    LazyDiyDict::typed_dict<int, int> __refDict_keyChangeDir;
     void __update_holding_keys(bool _printResult=false);
     /**
      * @brief Check whether an ImGuiKey is *registered as* "holding down" in accordance with member `holding_keys__` settings.
@@ -179,9 +179,9 @@ inline void pressed_key__struct::__update_holding_keys(bool _printResult) {
         }
     }
 
-    // std::cout << DIY::prettyPrint_vec1<int>(_recentPressed) << " | ";
+    // std::cout << LazyDiyDict::prettyPrint_vec1<int>(_recentPressed) << " | ";
     // std::cout << __refDict_holding_keys_occur << " | ";
-    // std::cout << DIY::prettyPrint_vec1<int>(this->holding_keys) << std::endl;
+    // std::cout << LazyDiyDict::prettyPrint_vec1<int>(this->holding_keys) << std::endl;
 
     _lastChecked = this->timePoints.at(timePoints.size()-1);
 
@@ -454,15 +454,15 @@ inline ImVec2 ImVec2_divide(ImVec2 _a, ImVec2 _b) {
 #define HPP__LOADBITMAP_FROMBITARRAY
 
 
-inline DIY::typed_dict<std::string, DIY::typed_dict<std::string, size_t>> imageFormats(
+inline LazyDiyDict::typed_dict<std::string, LazyDiyDict::typed_dict<std::string, size_t>> imageFormats(
     {"HSV", "RGB", "RGBA", "GRAY"}, {
-        DIY::typed_dict<std::string, size_t>(
+        LazyDiyDict::typed_dict<std::string, size_t>(
             {"n-bytes"}, {3}),
-        DIY::typed_dict<std::string, size_t>(
+        LazyDiyDict::typed_dict<std::string, size_t>(
             {"n-bytes"}, {3}),
-        DIY::typed_dict<std::string, size_t>(
+        LazyDiyDict::typed_dict<std::string, size_t>(
             {"n-bytes"}, {4}),
-        DIY::typed_dict<std::string, size_t>(
+        LazyDiyDict::typed_dict<std::string, size_t>(
             {"n-bytes"}, {1})
     }
 );

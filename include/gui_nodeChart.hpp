@@ -291,7 +291,7 @@ namespace gNC {
         float fillet_radius = 0;
 
 
-        DIY::typed_dict<ImGuiCol, DIY::typed_dict<std::string, ImU32>> winColour = DIY::typed_dict<ImGuiCol, DIY::typed_dict<std::string, ImU32>>({{
+        LazyDiyDict::typed_dict<ImGuiCol, LazyDiyDict::typed_dict<std::string, ImU32>> winColour = LazyDiyDict::typed_dict<ImGuiCol, LazyDiyDict::typed_dict<std::string, ImU32>>({{
             ImGuiCol_TitleBg, {
                 {"Default", IM_COL32(23, 23, 23, 250)},
                 {"Hovered", IM_COL32(100, 100, 100, 255)},

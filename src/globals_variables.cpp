@@ -16,7 +16,7 @@ unsigned int    __PROGRAM_FRAMES= (unsigned int)-1;
  *  where each category holds their own dictionary for the main boolean values themselves. Does not contain specific values other than on/off.
  * 
  */
-DIY::typed_dict<std::string, DIY::typed_dict<std::string, bool>> _SETTINGS({
+LazyDiyDict::typed_dict<std::string, LazyDiyDict::typed_dict<std::string, bool>> _SETTINGS({
     {
         "Program", { // [0]
             {"Running Main", true} // [0][0]
@@ -58,8 +58,8 @@ std::string __dir_programRoot   = "/home/berkhme/github_repo/Chromebook-projects
 std::string __dir_saveFiles     = "/home/berkhme/github_repo/Chromebook-projects/teststuff/cpp/useful/nodeChart/saveFiles/";
 #endif
 
-// DIY::typed_dict<std::string, gNC::guiNodeChart> projects;
-DIY::typed_dict<std::string, nc_proj> projects;
+// LazyDiyDict::typed_dict<std::string, gNC::guiNodeChart> projects;
+LazyDiyDict::typed_dict<std::string, nc_proj> projects;
 
 
 ImDrawList* project_draw_list = nullptr;

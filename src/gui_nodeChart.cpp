@@ -1952,9 +1952,9 @@ int gNC::guiNodeChart::loadFile(
 
     // _json["projects"][0]
 
-    // DIY::typed_dict<std::string, std::string> _refr;
+    // LazyDiyDict::typed_dict<std::string, std::string> _refr;
     assert(_json["projects"].isContainer());
-    DIY::typed_dict<std::string, gNC::gNODE*> _refrs;
+    LazyDiyDict::typed_dict<std::string, gNC::gNODE*> _refrs;
     std::string _refr;
 
     for (JSON_P::jsonPair _pair : _json["projects"][0].get2()) {
@@ -2048,7 +2048,7 @@ int gNC::guiNodeChart::loadFile(
             for (JSON_P::jsonPair _link : _pair.get3()) {
                 assert(_link.type() == 2);
                 gNC::gLINK _tempL;
-                DIY::typed_dict<std::string, gNC::gNODE*> _tempEnds;
+                LazyDiyDict::typed_dict<std::string, gNC::gNODE*> _tempEnds;
                 for (JSON_P::jsonPair _attr : _link.get2()) {
 
                     if (_attr.key == "label") { _tempL.label = _attr.get0(); }
@@ -2095,7 +2095,7 @@ int gNC::guiNodeChart::loadFile(
             std::cout << "Opened file to: read: \"" << filename << "\"" << std::endl;
         }
 
-        DIY::typed_dict<std::string, std::string> _depths;
+        LazyDiyDict::typed_dict<std::string, std::string> _depths;
 
         // int ind     = 0;
         bool inStr  = false;        // whether it's currently recording a string, so a `"` will set the opposite boolean, and if true: `{[]},:` will not be interpreted as json "methods"
