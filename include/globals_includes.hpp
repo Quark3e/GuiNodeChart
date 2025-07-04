@@ -36,8 +36,8 @@
 #include <imguidatechooser/imguidatechooser.h>
 
 
-// #include <useful.hpp>
-// #include <science/math/Bezier curve/bezier_curve.hpp>
+#include <useful.hpp>
+#include <bezier_curve.hpp>
 #include <JsonParser.hpp>
 #include <LazyDiyDict.hpp>
 
