@@ -13,3 +13,6 @@
 [submodule "lib/JsonParser"]
 	path = lib/JsonParser
 	url = https://github.com/Quark3e/JsonParser.git
+[submodule "imgui"]
+	path = lib/addons/imgui
+	url = https://github.com/Flix01/imgui.git
