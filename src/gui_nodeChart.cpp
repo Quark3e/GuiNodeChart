@@ -1943,7 +1943,7 @@ int gNC::guiNodeChart::loadFile(
     bool verbose
 ) {
 
-    JSON_P::jsonPair _json;
+    JsonParser::jsonPair _json;
     int exitCode = 0;
     if ((exitCode = _json.loadFile(filename, verbose, false)) != 0) {
         std::cout << "ERROR: " << _info_name << "loadFile failed to load file. code: " << exitCode << std::endl;
@@ -1957,7 +1957,7 @@ int gNC::guiNodeChart::loadFile(
     LazyDiyDict::typed_dict<std::string, gNC::gNODE*> _refrs;
     std::string _refr;
 
-    for (JSON_P::jsonPair _pair : _json["projects"][0].get2()) {
+    for (JsonParser::jsonPair _pair : _json["projects"][0].get2()) {
         // if(_pair.key=="date") 
         if (_pair.key == "name")       this->project_name = _pair.get0();
         if (_pair.key == "screen_pos") {
@@ -1973,10 +1973,10 @@ int gNC::guiNodeChart::loadFile(
             gNC::_DRAW_SCALAR.y = _pair[1].get11();
         }
         if (_pair.key == "nodes") {
-            for (JSON_P::jsonPair _node : _pair.get3()) {
+            for (JsonParser::jsonPair _node : _pair.get3()) {
                 assert(_node.type() == 2);
                 gNC::gNODE _tempN(0, 0);
-                for (JSON_P::jsonPair _attr : _node.get2()) {
+                for (JsonParser::jsonPair _attr : _node.get2()) {
                     if (_attr.key == "addr") { _refr = _attr.get0(); }
                     if (_attr.key == "label") { _tempN.label = _attr.get0(); }
                     if (_attr.key == "desc") { _tempN.desc = _attr.get0(); }
@@ -2045,11 +2045,11 @@ int gNC::guiNodeChart::loadFile(
             }
         }
         if (_pair.key == "links") {
-            for (JSON_P::jsonPair _link : _pair.get3()) {
+            for (JsonParser::jsonPair _link : _pair.get3()) {
                 assert(_link.type() == 2);
                 gNC::gLINK _tempL;
                 LazyDiyDict::typed_dict<std::string, gNC::gNODE*> _tempEnds;
-                for (JSON_P::jsonPair _attr : _link.get2()) {
+                for (JsonParser::jsonPair _attr : _link.get2()) {
 
                     if (_attr.key == "label") { _tempL.label = _attr.get0(); }
                     if (_attr.key == "desc") { _tempL.desc = _attr.get0(); }

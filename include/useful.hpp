@@ -7,26 +7,57 @@
 #include <iomanip>
 #include <iostream>
 
-
-
-/// @brief Convert decimal number to std::string with set preicision
-/// @tparam T 
-/// @param value decimal number to convert/type-cast
-/// @param varPrecision number of decimals
-/// @return std::string of `value` with `varPrecision` number of decimal numbers
-template<class T>
-inline std::string formatNumber(T value, int varPrecision=2) {
-    std::stringstream tempStream;
-    tempStream << std::fixed << std::setprecision(varPrecision) << value;
-    return tempStream.str();
+inline std::string getDate(bool addNewline = true) {
+    time_t currDate = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    std::string _out = ctime(&currDate);
+    if(addNewline) return _out;
+    else {
+        return _out.substr(0, _out.length()-1);
+    }
 }
+
+/**
+ * @brief Get the index of a desired value
+ * 
+ * @tparam varType value type
+ * @param toCheck the container to check
+ * @param toFind what to find.
+ * ```
+ * - `0` - biggest value
+ * - `1` - smallest value
+ * ```
+ * @return size_t of the desired element index
+ */
+template<typename varType>
+inline size_t findIdx(std::vector<varType> toCheck, int toFind) {
+    size_t index = 0;
+    for(size_t i=1; i<toCheck.size(); i++) {
+        switch (toFind) {
+        case 0: //max
+            if(toCheck[i]>toCheck[index]) {index = i;}
+            break;
+        case 1: //min
+            if(toCheck[i]<toCheck[index]) {index = i;}
+            break;
+        default:
+            throw std::invalid_argument("findIdx: invalid `toFind` argument.");
+            break;
+        }
+    }
+    return index;
+}
+template<typename varType>
+inline size_t findIdx(std::initializer_list<varType> toCheck, int toFind) {
+    return findIdx<varType>(toCheck, toFind);
+}
+
 template<class T>
 inline std::string formatNumber(
     T value,
     int strWidth,
-    int varPrecision,
-    std::string align,
-    bool numberFill
+    int varPrecision    = 1,
+    std::string align   = "right",
+    bool numberFill     = false
 ) {
     std::stringstream outStream, _temp;
     int fillZeros = 0;
@@ -222,4 +253,97 @@ inline idx_type idx_findVal(
     else return -1;
 }
 
+
+inline std::vector<int> convert_RGB_HSV(
+    std::vector<int> _RGB
+) {
+    std::vector<float> RGB_p{
+        static_cast<float>(_RGB[0])/255,
+        static_cast<float>(_RGB[1])/255,
+        static_cast<float>(_RGB[2])/255
+    };
+    std::vector<int> HSV(3, 0);
+    size_t maxIdx = findIdx<float>(RGB_p, 0);
+    size_t minIdx = findIdx<float>(RGB_p, 1);
+
+    int delta = _RGB[maxIdx]-_RGB[minIdx];
+
+    HSV[2] = static_cast<int>(100*RGB_p[maxIdx]);
+    HSV[1] = static_cast<int>(100*(HSV[2]==0? 0 : delta/RGB_p[maxIdx]));
+    switch (maxIdx) {
+        case 0:
+            HSV[0] = static_cast<int>(60*(delta==0? 0 : ((RGB_p[1]-RGB_p[2])/(delta)+0)));
+            break;
+        case 1:
+            HSV[0] = static_cast<int>(60*(delta==0? 0 : ((RGB_p[2]-RGB_p[0])/(delta)+2)));
+            break;
+        case 2:
+            HSV[0] = static_cast<int>(60*(delta==0? 0 : ((RGB_p[0]-RGB_p[1])/(delta)+4)));
+            break;
+    }
+    if(HSV[0]<0) HSV[0]+=360;
+
+    return HSV;
+}
+
+/**
+ * @brief Convert HSV values to RGB values
+ * 
+ * @param HSV float values of HSV (Hue, Saturation, Value) (degrees, percentage, percentage) [0-360, 0-100, 0-100]
+ * @return std::vector<float> of the HSV values [0-255]
+ */
+inline std::vector<float> convert_HSV_RGB(
+    std::vector<float> HSV
+) {
+    std::vector<float> _RGB(3, 0);
+    std::vector<float> RGB_p(3, 0);
+    std::vector<float> HSV_p{
+        static_cast<float>(HSV[0]),
+        static_cast<float>(HSV[1])/100,
+        static_cast<float>(HSV[2])/100
+    };
+
+    float C = HSV_p[2] * HSV_p[1];
+    float X = C * float(1 - abs(fmod(HSV_p[0]/60, 2) -1));
+    float m = HSV_p[2] - C;
+
+    // std::cout<<"{"<<C<<", "<<X<<", "<<m<<"}\n";
+
+    if(HSV_p[0] < 60) {
+        RGB_p[0] = C;
+        RGB_p[1] = X;
+        RGB_p[2] = 0;
+    }
+    else if(HSV_p[0] < 120) {
+        RGB_p[0] = X;
+        RGB_p[1] = C;
+        RGB_p[2] = 0;
+    }
+    else if(HSV_p[0] < 180) {
+        RGB_p[0] = 0;
+        RGB_p[1] = C;
+        RGB_p[2] = X;
+    }
+    else if(HSV_p[0] < 240) {
+        RGB_p[0] = 0;
+        RGB_p[1] = X;
+        RGB_p[2] = C;
+    }
+    else if(HSV_p[0] < 300) {
+        RGB_p[0] = X;
+        RGB_p[1] = 0;
+        RGB_p[2] = C;
+    }
+    else {
+        RGB_p[0] = C;
+        RGB_p[1] = 0;
+        RGB_p[2] = X;
+    }
+
+    _RGB[0] = (RGB_p[0]+m)*static_cast<float>(255);
+    _RGB[1] = (RGB_p[1]+m)*static_cast<float>(255);
+    _RGB[2] = (RGB_p[2]+m)*static_cast<float>(255);
+
+    return _RGB;
+}
 

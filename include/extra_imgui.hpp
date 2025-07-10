@@ -13,7 +13,7 @@
 
 #include <vector>
 #include <list>
-// #include <useful.hpp>
+#include <useful.hpp>
 #include <LazyDiyDict.hpp>
 
 #include <KeyBindHandler.hpp>

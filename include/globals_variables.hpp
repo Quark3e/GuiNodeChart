@@ -11,7 +11,7 @@
 #include "KeyBindHandler.hpp"
 #include "LazyDiyDict.hpp"
 #if _WIN32
-#include <imgui\addons\imguifilesystem\dirent_portable.h>
+#include <addons\imguifilesystem\dirent_portable.h>
 #else
 #include <dirent.h>
 #endif
@@ -111,7 +111,7 @@ struct dim_lim {
             case 1: return max;
         }
         throw std::invalid_argument("size_t arg for index is invalid.");
-        return ImVec2(0, 0);
+        // return ImVec2(0, 0);
     }
     ImVec2 operator[](size_t _i) const {
         switch (_i) {
@@ -119,7 +119,7 @@ struct dim_lim {
             case 1: return max;
         }
         throw std::invalid_argument("size_t arg for index is invalid.");
-        return ImVec2(0, 0);
+        // return ImVec2(0, 0);
     }
     dim_lim operator+(dim_lim const& m) {
         dim_lim(ImVec2_add(this->min, m.min), ImVec2_add(this->max, m.max));

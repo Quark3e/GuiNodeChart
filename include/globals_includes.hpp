@@ -33,7 +33,7 @@
 #include <imgui.h>
 #include <misc/cpp/imgui_stdlib.h>
 #include <imgui_impl_allegro5.h>
-#include <imguidatechooser/imguidatechooser.h>
+#include <addons/imguidatechooser/imguidatechooser.h>
 
 
 #include <useful.hpp>
