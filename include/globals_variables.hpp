@@ -11,6 +11,8 @@
 #include "KeyBindHandler.hpp"
 #include "LazyDiyDict.hpp"
 #if _WIN32
+#include <windows.h>
+#include <stringapiset.h>
 #include <addons\imguifilesystem\dirent_portable.h>
 #else
 #include <dirent.h>

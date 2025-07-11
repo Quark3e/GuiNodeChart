@@ -201,7 +201,7 @@ int main(int argc, char** argv) {
             if(ImGui::IsWindowFocused(ImGuiFocusedFlags_ChildWindows)) {
                 if(!lockMove_screen && isKeyPressed(655, &((*pressed_keys)[pressed_keys->size()-1]))) {
                     projects[_selected].chart.setScreen_pos(io.MouseDelta.x*(1.0/gNC::_DRAW_SCALAR.x), io.MouseDelta.y*(1.0/gNC::_DRAW_SCALAR.y), 1); //??
-                    // std::cout << "new screen pos: " << formatContainer1(projects[_selected].chart.screen_pos, 2, 0, 0) << std::endl;
+                    // std::cout << "new screen pos: " << Useful_GuiNodeChart::formatContainer1(projects[_selected].chart.screen_pos, 2, 0, 0) << std::endl;
                     mouseDrag_left = true;
                 }
                 else {
@@ -385,7 +385,7 @@ int main(int argc, char** argv) {
                 dim__main__drawScalar.y = _inputScalar;
                 gNC::_DRAW_SCALAR = dim__main__drawScalar;
                 
-                // std::cout << formatContainer1(gNC::_DRAW_SCALAR, 2, 5, 2) << std::endl;
+                // std::cout << Useful_GuiNodeChart::formatContainer1(gNC::_DRAW_SCALAR, 2, 5, 2) << std::endl;
                 ImGui::EndMenu();
             }
             if(ImGui::BeginMenu("View")) {

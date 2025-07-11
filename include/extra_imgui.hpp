@@ -185,7 +185,7 @@ inline void pressed_key__struct::__update_holding_keys(bool _printResult) {
 
     _lastChecked = this->timePoints.at(timePoints.size()-1);
 
-    if(_printResult) std::cout << formatContainer1(__refDict_holding_keys_occur, __refDict_holding_keys_occur.size(), 3, 0) << std::endl;
+    if(_printResult) std::cout << Useful_GuiNodeChart::formatContainer1(__refDict_holding_keys_occur, __refDict_holding_keys_occur.size(), 3, 0) << std::endl;
 }
 inline bool pressed_key__struct::isHolding(int _key) {
     for(size_t i=0; i<this->holding_keys.size(); i++) {
@@ -281,7 +281,7 @@ inline float pressed_key__struct::keyPeriod(int keyID, bool mustAlone, int blank
  * - Mouse_right:   656
  */
 inline bool isKeyPressed(int keyID, std::vector<int>* pressed_keys) {
-    if(pressed_keys->size() > 0 && searchVec<int>(*pressed_keys, keyID) != -1)
+    if(pressed_keys->size() > 0 && Useful_GuiNodeChart::searchVec<int>(*pressed_keys, keyID) != -1)
         return true;
     return false;
 }
@@ -565,7 +565,7 @@ inline bool loadBitmap_fromBitArray(
             // std::cout<<"1("<<startIdx<<"),";std::cout.flush();
 
             if(_colourFormat=="HSV") {
-                std::vector<float> _RGB = convert_HSV_RGB({static_cast<float>(_bitArray->operator[](startIdx)), static_cast<float>(_bitArray->operator[](startIdx)), float(_bitArray->operator[](startIdx))});
+                std::vector<float> _RGB = Useful_GuiNodeChart::convert_HSV_RGB({static_cast<float>(_bitArray->operator[](startIdx)), static_cast<float>(_bitArray->operator[](startIdx)), float(_bitArray->operator[](startIdx))});
                 _colour = (255<<24) + (unsigned(_RGB[2])<<16) + (unsigned(_RGB[1])<<8) + (unsigned(_RGB[0]));
             }
             else if(_colourFormat=="RGB") {

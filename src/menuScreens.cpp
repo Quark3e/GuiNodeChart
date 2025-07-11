@@ -370,7 +370,7 @@ void gNC::_menu__link_details(
                     ImVec2 &currPoint = toDetail->link_points_raw[i];
                     ImGui::TableNextRow();
                     ImGui::TableSetColumnIndex(0);
-                    ImGui::TextUnformatted(formatNumber(i, 3, 0).c_str());
+                    ImGui::TextUnformatted(Useful_GuiNodeChart::formatNumber(i, 3, 0).c_str());
                     ImGui::TableSetColumnIndex(1);
                     ImGui::PushID(i);
                     if(ImGui::Selectable("", false, ImGuiSelectableFlags_SpanAllColumns)) {
@@ -380,13 +380,13 @@ void gNC::_menu__link_details(
                     if(ImGui::IsItemHovered(ImGuiHoveredFlags_None)) {
                         if(project_draw_list) {
                             project_draw_list->AddCircle(ImVec2_multiply(ImVec2_add(currPoint, chart->screen_pos), _DRAW_SCALAR), 12, IM_COL32(200, 200, 10, 200), 10, 1);
-                            // std::cout << "drew circle: " << formatContainer1(ImVec2_multiply(ImVec2_add(currPoint, chart->screen_pos), _DRAW_SCALAR), 2, 0, 0) << std::endl;
+                            // std::cout << "drew circle: " << Useful_GuiNodeChart::formatContainer1(ImVec2_multiply(ImVec2_add(currPoint, chart->screen_pos), _DRAW_SCALAR), 2, 0, 0) << std::endl;
                         }
                     }
                     ImGui::SameLine();
-                    ImGui::TextUnformatted(formatNumber(currPoint.x, 5, 0).c_str());
+                    ImGui::TextUnformatted(Useful_GuiNodeChart::formatNumber(currPoint.x, 5, 0).c_str());
                     ImGui::TableSetColumnIndex(2);
-                    ImGui::TextUnformatted(formatNumber(currPoint.y, 5, 0).c_str());
+                    ImGui::TextUnformatted(Useful_GuiNodeChart::formatNumber(currPoint.y, 5, 0).c_str());
 
                 }
                 ImGui::EndTable();
@@ -601,7 +601,7 @@ void gNC::_menu__timeline(
         // std::cout << std::endl;
         // std::cout << mousePos_relativeValues.x << " "<< mousePos_relativeValues.y << "  : ";
         // std::cout << ((_moving_side__val.value!=(size_t)-1)? _moving_side__val.value : -1) << "  ";
-        // std::cout << formatNumber((_moving_side__val.value!=(size_t)-1), 5, 0, "left") << " ";
+        // std::cout << Useful_GuiNodeChart::formatNumber((_moving_side__val.value!=(size_t)-1), 5, 0, "left") << " ";
 
         static auto _updateRelativeMouse = [](ImVec2 mousePos) {
             mousePos_insideTimeline = ImVec2_subtract(ImVec2_subtract(mousePos, timeline_pos), placeOffs);
@@ -816,11 +816,11 @@ void gNC::_menu__timeline(
         _updateRelativeMouse(io.MousePos);
 
 
-        // std::cout << " | " << formatVector(_affctd, 0, 0) << " ";
+        // std::cout << " | " << Useful_GuiNodeChart::formatVector(_affctd, 0, 0) << " ";
         if(!_moving_gNODE && _moving_side__val.value==(size_t)-1) {
             std::vector<gNC::gNODE*> _affctd = TL_ref.get_sides(mousePos_relativeValues.x, mousePos_relativeValues.y, __moving_side_detect_padding, nullptr);
             if(_affctd.size()>0) {
-                // std::cout << "_affctd:" << formatVector(_affctd, 0, 0) << " ";
+                // std::cout << "_affctd:" << Useful_GuiNodeChart::formatVector(_affctd, 0, 0) << " ";
                 cosmetics__cursorChanged = true;
                 if(_affctd.size()==1) _moving_side__side = TL_ref.get_timeObject(_affctd[0]).is_side(mousePos_relativeValues.x, __moving_side_detect_padding, true);
                 else _moving_side__side = 0;
@@ -1307,10 +1307,10 @@ void gNC::_menu__fileExplorer() {
                 ImGui::SetCursorPos(padding__content_fileExplorer);
                 ImGui::TextUnformatted(std::string(_pwdFileCont[selected].name).c_str());
                 
-                static std::string _strLabel_size   = formatNumber<std::string>("Size", 15, 0, "left");
-                static std::string _strLabel_path   = formatNumber<std::string>("Path", 15, 0, "left");
-                static std::string _strLabel_aTM    = formatNumber<std::string>("Last accessed", 15, 0, "left");
-                static std::string _strLabel_mTM    = formatNumber<std::string>("Last modified", 15, 0, "left");
+                static std::string _strLabel_size   = Useful_GuiNodeChart::formatNumber<std::string>("Size", 15, 0, "left");
+                static std::string _strLabel_path   = Useful_GuiNodeChart::formatNumber<std::string>("Path", 15, 0, "left");
+                static std::string _strLabel_aTM    = Useful_GuiNodeChart::formatNumber<std::string>("Last accessed", 15, 0, "left");
+                static std::string _strLabel_mTM    = Useful_GuiNodeChart::formatNumber<std::string>("Last modified", 15, 0, "left");
                 // static std::string _strLabel_
 
                 ImGui::SetCursorPosX(padding__content_fileExplorer.x);

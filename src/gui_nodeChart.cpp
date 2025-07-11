@@ -203,7 +203,7 @@ gNC::gLINK::gLINK(
     gNC::gNODE* par_src, gNC::gNODE* par_dest,
     std::string par_label, std::string par_desc, std::string par_bodyText
 ) : Pos_src(-1, -1), Pos_dest(-1, -1), label{ par_label }, desc{ par_desc }, bodyText{ par_bodyText } {
-    if (searchVec<int>(std::vector<int>{1, 3, 5}, par_type_src) == -1 && searchVec<int>(std::vector<int>{0, 2, 4}, par_type_dest) == -1) std::runtime_error("ERROR: gNC::gLINK() constructor par_type_{..} is invalid");
+    if (Useful_GuiNodeChart::searchVec<int>(std::vector<int>{1, 3, 5}, par_type_src) == -1 && Useful_GuiNodeChart::searchVec<int>(std::vector<int>{0, 2, 4}, par_type_dest) == -1) std::runtime_error("ERROR: gNC::gLINK() constructor par_type_{..} is invalid");
     if (par_src == nullptr && par_dest == nullptr) std::runtime_error("ERROR: gNC::gLINK(): constructor: both `src` and `dest` can't be nullptr");
 
     this->type_src = par_type_src;
@@ -245,7 +245,7 @@ void gNC::gLINK::move_link(
 
     /// @brief half of the smallest delta
     std::vector<float> tempVec{ std::abs(pos_delta.x), std::abs(pos_delta.y) };
-    float smallestDelta = findVal(tempVec, 1) / 2;
+    float smallestDelta = Useful_GuiNodeChart::findVal(tempVec, 1) / 2;
     /// @brief `0`- x is smallest; `1`- y is smallest
     int smallestType = (pos_delta.x < pos_delta.y ? 0 : 1);
 
@@ -257,8 +257,8 @@ void gNC::gLINK::move_link(
     */
     int connDir_dest = -1;
     int connDir_src = -1;
-    if (type_dest != 0 && dest) connDir_dest = PoN(dest->getConnectionPos(type_dest).y - dest->height / 2); // / std::abs(dest->getConnectionPos(type_dest).y - dest->height/2);
-    if (type_src != 1 && src) connDir_src = PoN(src->getConnectionPos(type_src).y - src->height / 2); /// std::abs(src->getConnectionPos(type_src).y - src->height/2);
+    if (type_dest != 0 && dest) connDir_dest = Useful_GuiNodeChart::PoN(dest->getConnectionPos(type_dest).y - dest->height / 2); // / std::abs(dest->getConnectionPos(type_dest).y - dest->height/2);
+    if (type_src != 1 && src) connDir_src = Useful_GuiNodeChart::PoN(src->getConnectionPos(type_src).y - src->height / 2); /// std::abs(src->getConnectionPos(type_src).y - src->height/2);
 
 
     link_points.clear();
@@ -273,8 +273,8 @@ void gNC::gLINK::move_link(
      // Values for same side connectionPos methods
 
     tempVec = std::vector<float>{ min__connect, smallestDelta };
-    float offs_bigger = findVal(tempVec, 0);
-    float offs_smaller = findVal(tempVec, 1);
+    float offs_bigger = Useful_GuiNodeChart::findVal(tempVec, 0);
+    float offs_smaller = Useful_GuiNodeChart::findVal(tempVec, 1);
     tempVec = std::vector<float>{ Pos_src.y, Pos_dest.y };
     /**
      * The y value of the link node that is the furthest away from median line between the link nodes,
@@ -284,7 +284,7 @@ void gNC::gLINK::move_link(
      * - is the link facing positive y (down)? find the biggest y value
      * - is the link facing negative y (up)? find the smallest y value
      */
-    float y_bigger = findVal(tempVec, (connDir_src == 1 ? 0 : 1));
+    float y_bigger = Useful_GuiNodeChart::findVal(tempVec, (connDir_src == 1 ? 0 : 1));
 
 
     if (type_src == 1) {
@@ -292,7 +292,7 @@ void gNC::gLINK::move_link(
             link_points.push_back(ImVec2(Pos_src.x + (type_dest == 0 ? pos_delta.x / 2 : pos_delta.x) - smallestDelta, Pos_src.y));
             link_points.push_back(ImVec2(Pos_src.x + (type_dest == 0 ? pos_delta.x / 2 : pos_delta.x), Pos_src.y));
             if (type_dest == 0) {
-                link_points.push_back(ImVec2(pos_middle.x, Pos_src.y + PoN(pos_delta.y) * smallestDelta));
+                link_points.push_back(ImVec2(pos_middle.x, Pos_src.y + Useful_GuiNodeChart::PoN(pos_delta.y) * smallestDelta));
                 link_points.push_back(pos_middle);
             }
         }
@@ -322,7 +322,7 @@ void gNC::gLINK::move_link(
                     y_bigger + offs_bigger * connDir_src
                 ));
                 link_points.push_back(ImVec2(
-                    Pos_src.x + (pos_delta.x > pos_delta.y ? offs_bigger : offs_smaller) * PoN(pos_delta.x),
+                    Pos_src.x + (pos_delta.x > pos_delta.y ? offs_bigger : offs_smaller) * Useful_GuiNodeChart::PoN(pos_delta.x),
                     link_points.back().y
                 ));
                 link_points.push_back(ImVec2(
@@ -340,7 +340,7 @@ void gNC::gLINK::move_link(
                     Pos_src.y + pos_delta.y / 2
                 ));
                 link_points.push_back(ImVec2(
-                    Pos_src.x + PoN(pos_delta.x) * smallestDelta,
+                    Pos_src.x + Useful_GuiNodeChart::PoN(pos_delta.x) * smallestDelta,
                     pos_middle.y
                 ));
                 link_points.push_back(pos_middle);
@@ -356,9 +356,9 @@ void gNC::gLINK::move_link(
     //         else if(type_dest==4) {
     //             link_points.push_back(ImVec2(
     //                 Pos_src.x,
-    //                 findVal(std::vector<float>{Pos_src.y, Pos_dest.y}, (connDir==-1? 0 : 1)) +
-    //                 findVal(std::vector<float>{connDir*min__connect, smallestDelta}, 0) -
-    //                 findVal(std::vector<float>{connDir*min__connect, smallestDelta}, 1)
+    //                 Useful_GuiNodeChart::findVal(std::vector<float>{Pos_src.y, Pos_dest.y}, (connDir==-1? 0 : 1)) +
+    //                 Useful_GuiNodeChart::findVal(std::vector<float>{connDir*min__connect, smallestDelta}, 0) -
+    //                 Useful_GuiNodeChart::findVal(std::vector<float>{connDir*min__connect, smallestDelta}, 1)
     //             ));
     //         }
     //         else {
@@ -376,7 +376,7 @@ void gNC::gLINK::move_link(
     if (type_dest == 0) {
         if (layout == 0 || layout == 1) {
             if (type_src == 1) {
-                link_points.push_back(ImVec2(pos_middle.x, Pos_dest.y - PoN(pos_delta.y) * smallestDelta));
+                link_points.push_back(ImVec2(pos_middle.x, Pos_dest.y - Useful_GuiNodeChart::PoN(pos_delta.y) * smallestDelta));
                 link_points.push_back(ImVec2(pos_middle.x, Pos_dest.y));
             }
             link_points.push_back(ImVec2(link_points.back().x + smallestDelta, Pos_dest.y));
@@ -393,7 +393,7 @@ void gNC::gLINK::move_link(
             }
             else if (type_src - type_dest == 1 && type_src != 1) { //same side
                 link_points.push_back(ImVec2(
-                    Pos_dest.x - PoN(pos_delta.x) * (pos_delta.x > pos_delta.y ? offs_bigger : offs_smaller),
+                    Pos_dest.x - Useful_GuiNodeChart::PoN(pos_delta.x) * (pos_delta.x > pos_delta.y ? offs_bigger : offs_smaller),
                     link_points.back().y
                 ));
                 link_points.push_back(ImVec2(Pos_dest.x, link_points.back().y));
@@ -403,7 +403,7 @@ void gNC::gLINK::move_link(
             }
             else { //opposite side
                 link_points.push_back(ImVec2(
-                    Pos_dest.x - PoN(pos_delta.x) * smallestDelta,
+                    Pos_dest.x - Useful_GuiNodeChart::PoN(pos_delta.x) * smallestDelta,
                     pos_middle.y
                 ));
                 link_points.push_back(ImVec2(Pos_dest.x, link_points.back().y));
@@ -475,7 +475,7 @@ void gNC::gLINK::draw_link(
     for(size_t i=0; i<link_points.size(); i++) {
         ImVec2 checkP = link_points.at(i);
         for(size_t ii=i+1; ii<link_points.size(); ii++) {
-            if(decimalSame(checkP, link_points.at(ii), 2, 1)) {
+            if(Useful_GuiNodeChart::decimalSame(checkP, link_points.at(ii), 2, 1)) {
                 auto itr = link_points.begin();
                 std::advance(itr, ii);
                 link_points.erase(itr);
@@ -522,7 +522,7 @@ void gNC::gLINK::draw_link(
     // for(size_t i=0; i<link_points.size()-2; i++) {
     //     _distances.push_back(getNDimDistance<ImVec2>(2, link_points[i], link_points[i+1]));
     // }
-    // float _minDist = findVal(_distances, 1);
+    // float _minDist = Useful_GuiNodeChart::findVal(_distances, 1);
 
     /// Double check link_points
     for (int i = 0; i < link_points.size() - 2; i++) {
@@ -532,10 +532,10 @@ void gNC::gLINK::draw_link(
             // std::vector<Pos2d> curve = quadratic_bezier(to_Pos2d<float>(link_points[i]), to_Pos2d<float>(link_points[i+2]), to_Pos2d<float>(link_points[i+1]), bezierSegs, &link_points_coeffs, "1");
             std::vector<std::vector<float>> _coefs;
             std::vector<Pos2d<float>> curve = quadratic_bezier(to_Pos2d<float>(link_points[i]), to_Pos2d<float>(link_points[i + 2]), to_Pos2d<float>(link_points[i + 1]), bezierSegs, &_coefs, "0");
-            // std::cout << formatVector(curve) << std::endl;
+            // std::cout << Useful_GuiNodeChart::formatVector(curve) << std::endl;
             for(size_t ii=0; ii<curve.size(); ii++) {
                 if(!inRegion(to_ImVec2<float>(curve[ii]), link_points[i], link_points[i+2], ImVec2(2, 2), true)) {
-                    // std::cout << formatNumber(ii, 2, 0)<<": NOT IN REGION{ "<<to_Pos2d<float>(link_points[i])<<", "<<to_Pos2d<float>(link_points[i+2])<<" : "<<to_Pos2d<float>(link_points[i+1])<< " } -> " << formatContainer1(curve[ii], 2, 8, 2);
+                    // std::cout << Useful_GuiNodeChart::formatNumber(ii, 2, 0)<<": NOT IN REGION{ "<<to_Pos2d<float>(link_points[i])<<", "<<to_Pos2d<float>(link_points[i+2])<<" : "<<to_Pos2d<float>(link_points[i+1])<< " } -> " << Useful_GuiNodeChart::formatContainer1(curve[ii], 2, 8, 2);
                     // if(_coefs.size()>0) {
 
                     // }
@@ -653,8 +653,8 @@ bool gNC::gLINK::region(
 
     if (!link_points_raw__updated) {
         link_lims = {
-            std::vector<float>{idx_findVal<ImVec2, float>(link_points_raw, 1, 0), idx_findVal<ImVec2, float>(link_points_raw, 0, 0)},
-            std::vector<float>{idx_findVal<ImVec2, float>(link_points_raw, 1, 1), idx_findVal<ImVec2, float>(link_points_raw, 0, 1)}
+            std::vector<float>{Useful_GuiNodeChart::idx_findVal<ImVec2, float>(link_points_raw, 1, 0), Useful_GuiNodeChart::idx_findVal<ImVec2, float>(link_points_raw, 0, 0)},
+            std::vector<float>{Useful_GuiNodeChart::idx_findVal<ImVec2, float>(link_points_raw, 1, 1), Useful_GuiNodeChart::idx_findVal<ImVec2, float>(link_points_raw, 0, 1)}
         };
         link_points_raw__updated = true;
     }
@@ -1156,7 +1156,7 @@ gNC::gLINK* gNC::guiNodeChart::LINK_create(
             " arg(s) for node address(es) does not exist in stored nodes."
         );
     }
-    if (searchVec<int>(std::vector<int>{1, 3, 5}, type_src) == -1 && searchVec<int>(std::vector<int>{0, 2, 4}, type_dest) == -1) {
+    if (Useful_GuiNodeChart::searchVec<int>(std::vector<int>{1, 3, 5}, type_src) == -1 && Useful_GuiNodeChart::searchVec<int>(std::vector<int>{0, 2, 4}, type_dest) == -1) {
         std::runtime_error(
             "ERROR: " + this->_info_name + "LINK_create(gNC::gNODE*, gNC::gNODE*, int, int, std::string, std::string):" +
             " arg(s) for type_{..} is/are not valid."
@@ -1221,7 +1221,7 @@ gNC::gLINK* gNC::guiNodeChart::LINK_create_loose(
             " arg for _NODE address is incorreect."
         );
     }
-    if (searchVec<int>(std::vector<int>{1, 2, 3, 4, 5}, type_NODE_connection) == -1) {
+    if (Useful_GuiNodeChart::searchVec<int>(std::vector<int>{1, 2, 3, 4, 5}, type_NODE_connection) == -1) {
         std::runtime_error(
             "ERROR: " + this->_info_name + "LINK_create_loose(...):" +
             " arg for `type_NODE_connection`"
@@ -1229,7 +1229,7 @@ gNC::gLINK* gNC::guiNodeChart::LINK_create_loose(
     }
 
     int nType = 0; //`1`-src; `0`-dest
-    if (searchVec<int>(std::vector<int>{1, 3, 5}, type_NODE_connection) != -1) { //node is src (out, share)
+    if (Useful_GuiNodeChart::searchVec<int>(std::vector<int>{1, 3, 5}, type_NODE_connection) != -1) { //node is src (out, share)
         this->_links.push_back(gNC::gLINK(type_NODE_connection, 0, _NODE, nullptr, label, desc, bodyText));
         nType = 1;
     }
@@ -1272,7 +1272,7 @@ gNC::gLINK* gNC::guiNodeChart::LINK_create_loose(
 }
 
 int gNC::guiNodeChart::LINK_swapSrc(gNC::gLINK* toSwap, gNC::gNODE* newSrc, int srcType) {
-    if (searchVec<int>(std::vector<int>{1, 3, 5}, srcType) == -1)
+    if (Useful_GuiNodeChart::searchVec<int>(std::vector<int>{1, 3, 5}, srcType) == -1)
         std::runtime_error("ERROR: " + this->_info_name + "LINK_swapSrc(gNC::gLINK*, gNC::gNODE*, int): invalid `srcType` input");
     if (_find_ptr_itr<gNC::gNODE>(_nodes, newSrc) == _nodes.end())
         std::runtime_error("ERROR: " + this->_info_name + "LINK_swapSrc(gNC::gLINK*, gNC::gNODE*, int): arg for `newSrc` is not a valid `gNC::gNODE` address");
@@ -1305,7 +1305,7 @@ int gNC::guiNodeChart::LINK_swapSrc(gNC::gLINK* toSwap, gNC::gNODE* newSrc, int 
     return 0;
 }
 int gNC::guiNodeChart::LINK_swapDest(gNC::gLINK* toSwap, gNC::gNODE* newDest, int destType) {
-    if (searchVec<int>(std::vector<int>{0, 2, 4}, destType) == -1)
+    if (Useful_GuiNodeChart::searchVec<int>(std::vector<int>{0, 2, 4}, destType) == -1)
         std::runtime_error("ERROR: " + this->_info_name + "LINK_swapDest(gNC::gLINK*, gNC::gNODE*, int): invalid `destType` input");
     if (_find_ptr_itr<gNC::gNODE>(_nodes, newDest) == _nodes.end())
         std::runtime_error("ERROR: " + this->_info_name + "LINK_swapDest(gNC::gLINK*, gNC::gNODE*, int): arg for `newDest` is not a valid `NC::NODE` address");
@@ -1389,7 +1389,7 @@ bool _draw__node_cosmetics(
     // ImGui::SetWindowFontScale(1);
 
     ImGui::Separator();
-    ImGui::Text(formatContainer1((*itr).pos, 2, 0, 0).c_str());
+    ImGui::Text(Useful_GuiNodeChart::formatContainer1((*itr).pos, 2, 0, 0).c_str());
 
     // ImGui::Separator();
     // ImGui::TextWrapped((*itr).bodyText.c_str());
@@ -1542,7 +1542,7 @@ int gNC::guiNodeChart::draw() {
         // if (isKeyPressed(ImGuiKey_MouseLeft, &(*pressed_keys)[pressed_keys->size() - 1]) && !_mode__fileExplorer) {
         // if (guiKeys.isClicked(ImGuiKey_MouseLeft) && !_mode__fileExplorer) {
         if (keyBinds.pressing("MouseLeft") && !_mode__fileExplorer) {
-        // std::cout << formatNumber(keyBinds.pressing("MouseLeft"), 5, 0, "left")<< " | " << formatNumber(guiKeys.isClicked(ImGuiKey_MouseLeft), 5, 0)<< " | " << formatNumber(isKeyPressed(ImGuiKey_MouseLeft, &(*pressed_keys)[pressed_keys->size() - 1]), 5, 0);
+        // std::cout << Useful_GuiNodeChart::formatNumber(keyBinds.pressing("MouseLeft"), 5, 0, "left")<< " | " << Useful_GuiNodeChart::formatNumber(guiKeys.isClicked(ImGuiKey_MouseLeft), 5, 0)<< " | " << Useful_GuiNodeChart::formatNumber(isKeyPressed(ImGuiKey_MouseLeft, &(*pressed_keys)[pressed_keys->size() - 1]), 5, 0);
             if (node_connect == -1) {
                 if (inRegion(sMousePos, nodePos, ImVec2(nodePos.x + (*itr).width, nodePos.y + (*itr).height))) { //region: Node
                     if (mouseAction_left == 1 || mouseAction_left == -1) {
@@ -1683,7 +1683,7 @@ int gNC::guiNodeChart::draw() {
         ImGui::PopStyleColor(2);
         ImGui::SetWindowSize(ImVec2_multiply(ImVec2(((*itr).width), (*itr).height), _DRAW_SCALAR));
 
-        // std::cout << formatNumber(keyBinds.pressing("MouseLeft"), 5, 0)<< " " << formatNumber(keyBinds.released("MouseLeft"), 5, 0) << std::endl;
+        // std::cout << Useful_GuiNodeChart::formatNumber(keyBinds.pressing("MouseLeft"), 5, 0)<< " " << Useful_GuiNodeChart::formatNumber(keyBinds.released("MouseLeft"), 5, 0) << std::endl;
 
         if (!(*itr).init) {
             ImGui::SetWindowPos(ImVec2_multiply(ImVec2((*itr).pos[0], (*itr).pos[1]), _DRAW_SCALAR));
@@ -1853,11 +1853,11 @@ int gNC::guiNodeChart::saveToFile(
     _file << "{" << "\n"; ind++;
     _file << std::string(ind * 4, ' ') << "\"projects\": [" << "\n"; ind++;
     _file << std::string(ind * 4, ' ') << "{" << "\n"; ind++;
-    _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"date\"", 12, 0, "left") << ": " << "\"" + getDate(false) + "\"" << ",\n";
-    _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"name\"", 12, 0, "left") << ": " << "\"" + project_name + "\"" << ",\n";
-    _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"screen_pos\"", 12, 0, "left") << ": " << formatContainer1(screen_pos, 2, 5, 0, "right", false, '[', ']') << ",\n";
-    _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"screen_dim\"", 12, 0, "left") << ": " << formatContainer1(screen_dim, 2, 5, 0, "right", false, '[', ']') << ",\n";
-    _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"draw_scal\"",  12, 0, "left") << ": " << formatContainer1(_DRAW_SCALAR, 2, 5, 3, "right", false, '[', ']')<<",\n";
+    _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"date\""), 12, 0, "left") << ": " << "\"" + Useful_GuiNodeChart::getDate(false) + "\"" << ",\n";
+    _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"name\""), 12, 0, "left") << ": " << "\"" + project_name + "\"" << ",\n";
+    _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"screen_pos\""), 12, 0, "left") << ": " << Useful_GuiNodeChart::formatContainer1(screen_pos, 2, 5, 0, "right", false, '[', ']') << ",\n";
+    _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"screen_dim\""), 12, 0, "left") << ": " << Useful_GuiNodeChart::formatContainer1(screen_dim, 2, 5, 0, "right", false, '[', ']') << ",\n";
+    _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"draw_scal\""),  12, 0, "left") << ": " << Useful_GuiNodeChart::formatContainer1(_DRAW_SCALAR, 2, 5, 3, "right", false, '[', ']')<<",\n";
     _file << std::string(ind * 4, ' ') << "\"nodes\"" << "\t: [\n"; ind++;
 
     for (auto itr = _nodes.begin(); itr != _nodes.end(); ++itr) {
@@ -1865,22 +1865,22 @@ int gNC::guiNodeChart::saveToFile(
         if (itr == _nodes.begin())  _file << std::string(ind * 4, ' ');
         _file << "{\n"; ind++;
 
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"addr\"", 12, 0, "left") << ": \"" << prepString((*itr).addr) << "\",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"label\"", 12, 0, "left") << ": \"" << prepString((*itr).label) << "\",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"desc\"", 12, 0, "left") << ": \"" << prepString((*itr).desc) << "\",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"bodyText\"", 12, 0, "left") << ": \"" << prepString((*itr).bodyText) << "\",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"date\"", 12, 0, "left") << ": \"" << getDateLambda(&((*itr).date)) << "\",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"init\"", 12, 0, "left") << ": " << ((*itr).init ? "true" : "false") << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"layout\"", 12, 0, "left") << ": " << (*itr).layout << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"width\"", 12, 0, "left") << ": " << (*itr).width << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"height\"", 12, 0, "left") << ": " << (*itr).height << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"pos\"", 12, 0, "left") << ": " << formatContainer1((*itr).pos, 2, 4, 0, "right", false, '[', ']') << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"pos_in\"", 12, 0, "left") << ": " << formatContainer1((*itr).pos_in, 2, 4, 0, "right", false, '[', ']') << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"pos_out\"", 12, 0, "left") << ": " << formatContainer1((*itr).pos_out, 2, 4, 0, "right", false, '[', ']') << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"pos_add\"", 12, 0, "left") << ": " << formatContainer1((*itr).pos_add_0, 2, 4, 0, "right", false, '[', ']') << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"pos_share\"", 12, 0, "left") << ": " << formatContainer1((*itr).pos_share_0, 2, 4, 0, "right", false, '[', ']') << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"ROI_attach\"", 12, 0, "left") << ": " << formatContainer1((*itr).ROI_attach, 2, 4, 0, "right", false, '[', ']') << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"fillet_rad\"", 12, 0, "left") << ": " << (*itr).fillet_radius << "\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"addr\""), 12, 0, "left") << ": \"" << prepString((*itr).addr) << "\",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"label\""), 12, 0, "left") << ": \"" << prepString((*itr).label) << "\",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"desc\""), 12, 0, "left") << ": \"" << prepString((*itr).desc) << "\",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"bodyText\""), 12, 0, "left") << ": \"" << prepString((*itr).bodyText) << "\",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"date\""), 12, 0, "left") << ": \"" << getDateLambda(&((*itr).date)) << "\",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"init\""), 12, 0, "left") << ": " << ((*itr).init ? "true" : "false") << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"layout\""), 12, 0, "left") << ": " << (*itr).layout << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"width\""), 12, 0, "left") << ": " << (*itr).width << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"height\""), 12, 0, "left") << ": " << (*itr).height << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"pos\""), 12, 0, "left") << ": " << Useful_GuiNodeChart::formatContainer1((*itr).pos, 2, 4, 0, "right", false, '[', ']') << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"pos_in\""), 12, 0, "left") << ": " << Useful_GuiNodeChart::formatContainer1((*itr).pos_in, 2, 4, 0, "right", false, '[', ']') << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"pos_out\""), 12, 0, "left") << ": " << Useful_GuiNodeChart::formatContainer1((*itr).pos_out, 2, 4, 0, "right", false, '[', ']') << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"pos_add\""), 12, 0, "left") << ": " << Useful_GuiNodeChart::formatContainer1((*itr).pos_add_0, 2, 4, 0, "right", false, '[', ']') << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"pos_share\""), 12, 0, "left") << ": " << Useful_GuiNodeChart::formatContainer1((*itr).pos_share_0, 2, 4, 0, "right", false, '[', ']') << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"ROI_attach\""), 12, 0, "left") << ": " << Useful_GuiNodeChart::formatContainer1((*itr).ROI_attach, 2, 4, 0, "right", false, '[', ']') << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"fillet_rad\""), 12, 0, "left") << ": " << (*itr).fillet_radius << "\n";
 
         ind--;
         _file << std::string(ind * 4, ' ') << "}";
@@ -1900,25 +1900,25 @@ int gNC::guiNodeChart::saveToFile(
         if (itr == _links.begin()) _file << std::string(ind * 4, ' ');
         _file << "{\n"; ind++;
 
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"addr\"", 22, 0, "left") << ": \"" << prepString((*itr).addr) << "\",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"label\"", 22, 0, "left") << ": \"" << prepString((*itr).label) << "\",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"desc\"", 22, 0, "left") << ": \"" << prepString((*itr).desc) << "\",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"bodyText\"", 22, 0, "left") << ": \"" << prepString((*itr).bodyText) << "\",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"date\"", 22, 0, "left") << ": \"" << getDateLambda(&((*itr).date)) /*dateToStr((*itr).date)*/ << "\",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"type_src\"", 22, 0, "left") << ": " << (*itr).type_src << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"type_dest\"", 22, 0, "left") << ": " << (*itr).type_dest << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"src\"", 22, 0, "left") << ": \"" << (*itr).src << "\",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"dest\"", 22, 0, "left") << ": \"" << (*itr).dest << "\",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"layout\"", 22, 0, "left") << ": " << (*itr).layout << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"min__connect\"", 22, 0, "left") << ": " << (*itr).min__connect << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"min__node\"", 22, 0, "left") << ": " << (*itr).min__node << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"lim__sameSide\"", 22, 0, "left") << ": " << (*itr).lim__sameSide << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"_gui__bezier_min\"", 22, 0, "left") << ": " << (*itr)._gui__bezier_min << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"Pos_src\"", 22, 0, "left") << ": " << formatContainer1((*itr).Pos_src, 2, 4, 0, "right", false, '[', ']') << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"Pos_dest\"", 22, 0, "left") << ": " << formatContainer1((*itr).Pos_dest, 2, 4, 0, "right", false, '[', ']') << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"Pos_center\"", 22, 0, "left") << ": " << formatContainer1((*itr).Pos_center, 2, 4, 0, "right", false, '[', ']') << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"link_lineWidth\"", 22, 0, "left") << ": " << (*itr).link_lineWidth << ",\n";
-        _file << std::string(ind * 4, ' ') << formatNumber<std::string>("\"link_gui__lineWidth\"", 22, 0, "left") << ": " << (*itr).link_gui__lineWidth << "\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"addr\""), 22, 0, "left") << ": \"" << prepString((*itr).addr) << "\",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"label\""), 22, 0, "left") << ": \"" << prepString((*itr).label) << "\",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"desc\""), 22, 0, "left") << ": \"" << prepString((*itr).desc) << "\",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"bodyText\""), 22, 0, "left") << ": \"" << prepString((*itr).bodyText) << "\",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"date\""), 22, 0, "left") << ": \"" << getDateLambda(&((*itr).date)) /*dateToStr((*itr).date)*/ << "\",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"type_src\""), 22, 0, "left") << ": " << (*itr).type_src << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"type_dest\""), 22, 0, "left") << ": " << (*itr).type_dest << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"src\""), 22, 0, "left") << ": \"" << (*itr).src << "\",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"dest\""), 22, 0, "left") << ": \"" << (*itr).dest << "\",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"layout\""), 22, 0, "left") << ": " << (*itr).layout << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"min__connect\""), 22, 0, "left") << ": " << (*itr).min__connect << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"min__node\""), 22, 0, "left") << ": " << (*itr).min__node << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"lim__sameSide\""), 22, 0, "left") << ": " << (*itr).lim__sameSide << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"_gui__bezier_min\""), 22, 0, "left") << ": " << (*itr)._gui__bezier_min << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"Pos_src\""), 22, 0, "left") << ": " << Useful_GuiNodeChart::formatContainer1((*itr).Pos_src, 2, 4, 0, "right", false, '[', ']') << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"Pos_dest\""), 22, 0, "left") << ": " << Useful_GuiNodeChart::formatContainer1((*itr).Pos_dest, 2, 4, 0, "right", false, '[', ']') << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"Pos_center\""), 22, 0, "left") << ": " << Useful_GuiNodeChart::formatContainer1((*itr).Pos_center, 2, 4, 0, "right", false, '[', ']') << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"link_lineWidth\""), 22, 0, "left") << ": " << (*itr).link_lineWidth << ",\n";
+        _file << std::string(ind * 4, ' ') << Useful_GuiNodeChart::formatNumber(static_cast<std::string>("\"link_gui__lineWidth\""), 22, 0, "left") << ": " << (*itr).link_gui__lineWidth << "\n";
 
         ind--;
         _file << std::string(ind * 4, ' ') << "}";
@@ -2725,7 +2725,7 @@ int gNC::timeline::move_sides(
             }
         }
     }
-    // std::cout << " toMove:"<<formatVector(toMove, 0, 0, "left") << " specifd:" << (_toMove? ptrToStr(_toMove) : "nullptr") << " ";
+    // std::cout << " toMove:"<<Useful_GuiNodeChart::formatVector(toMove, 0, 0, "left") << " specifd:" << (_toMove? ptrToStr(_toMove) : "nullptr") << " ";
 
     /// Checking for outsider/external timeObjects that the _newVal may interfere-with/enroach-it's-area/affect
     for (size_t i = 0; i < _vec->size(); i++) {

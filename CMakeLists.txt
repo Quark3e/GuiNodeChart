@@ -37,6 +37,7 @@ set(GNC_FILES__SOURCES
 
 set(GNC_DIR__LIB_INCLUDES
     "${GNC_DIR__LIBRARY}/imgui"
+    "${GNC_DIR__LIBRARY}/imgui/backends"
     "${GNC_DIR__LIBRARY}/JsonParser/include/"
     "${GNC_DIR__LIBRARY}/KeyBindHandler/include/"
     "${GNC_DIR__LIBRARY}/LazyDiyDict/include/"
