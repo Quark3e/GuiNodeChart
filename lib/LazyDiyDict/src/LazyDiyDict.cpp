@@ -588,7 +588,7 @@ std::string LazyDiyDict::dict::str_export(
     
 
     pos = this->_idx[pos];
-    switch (static_cast<int>(floor(type_deriv2/10))) {
+    switch (static_cast<int>(std::floor(type_deriv2/10))) {
     case 0: //bool
         if(vecType==0 && isPtr) tempStr = std::string(padding,emptySpace) + _bool_string(*values_0_bool_p[pos]) + std::string(padding,emptySpace);
         if(vecType==0 && !isPtr)tempStr = std::string(padding,emptySpace) + _bool_string(values_0_bool[pos]) + std::string(padding,emptySpace);
