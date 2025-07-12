@@ -18,7 +18,7 @@
 
 
 namespace LazyDiyDict {
-    std::string _info_name__namespace;
+    extern std::string _info_name__namespace;
 
 
     //==========Helper Functions==========
