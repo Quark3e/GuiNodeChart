@@ -38,6 +38,7 @@ set(GNC_FILES__SOURCES
 set(GNC_DIR__LIB_INCLUDES
     "${GNC_DIR__LIBRARY}/imgui"
     "${GNC_DIR__LIBRARY}/imgui/backends"
+    "${GNC_DIR__LIBRARY}/imgui/misc/cpp"
     "${GNC_DIR__LIBRARY}/JsonParser/include/"
     "${GNC_DIR__LIBRARY}/KeyBindHandler/include/"
     "${GNC_DIR__LIBRARY}/LazyDiyDict/include/"
@@ -47,6 +48,7 @@ set(GNC_DIR__LIB_INCLUDES
 file(GLOB GNC_FILES__LIB_SOURCES__IMGUI CONFIGURE_DEPENDS "${GNC_DIR__LIBRARY}/imgui/imgui*.cpp")
 list(APPEND GNC_FILES__LIB_SOURCES__IMGUI "${GNC_DIR__LIBRARY}/imgui/backends/imgui_impl_allegro5.cpp")
 list(APPEND GNC_FILES__LIB_SOURCES__IMGUI "${GNC_DIR__LIBRARY}/imgui/addons/imguidatechooser/imguidatechooser.cpp")
+list(APPEND GNC_FILES__LIB_SOURCES__IMGUI "${GNC_DIR__LIBRARY}/imgui/misc/cpp/imgui_stdlib.cpp")
 
 message(STATUS "GNC_FILES__LIB_SOURCES__IMGUI : ${GNC_FILES__LIB_SOURCES__IMGUI}")
 
