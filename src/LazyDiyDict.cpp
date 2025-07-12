@@ -2,7 +2,7 @@
 #include "LazyDiyDict.hpp"
 
 
-
+std::string LazyDiyDict::_info_name__namespace = "LazyDiyDict";
 
 LazyDiyDict::dict::dict(/* args */) {
 

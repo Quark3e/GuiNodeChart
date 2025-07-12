@@ -246,7 +246,7 @@ namespace LazyDiyDict {
      */
     class dict {
         private:
-            std::string _info_name = "LazyDiyDict::dict";
+            std::string _info_name = _info_name__namespace+"::dict";
 
 
             int  arg_searchVec_threadLen    = 100;
@@ -674,7 +674,7 @@ namespace LazyDiyDict {
     template<class _key_type, class _store_type>
     class typed_dict {
         private:
-            std::string _info_name = "LazyDiyDict::typed_dict";
+            std::string _info_name = _info_name__namespace+"::typed_dict";
             
             std::vector<_key_type>      _keys;
             std::vector<_store_type*>   _lookup;
