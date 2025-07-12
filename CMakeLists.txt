@@ -45,6 +45,7 @@ set(GNC_DIR__LIB_INCLUDES
 )
 
 file(GLOB GNC_FILES__LIB_SOURCES__IMGUI CONFIGURE_DEPENDS "${GNC_DIR__LIBRARY}/imgui/imgui*.cpp")
+list(APPEND GNC_FILES__LIB_SOURCES__IMGUI "${GNC_DIR__LIBRARY}/imgui/backends/imgui_impl_allegro5.cpp")
 list(APPEND GNC_FILES__LIB_SOURCES__IMGUI "${GNC_DIR__LIBRARY}/imgui/addons/imguidatechooser/imguidatechooser.cpp")
 
 message(STATUS "GNC_FILES__LIB_SOURCES__IMGUI : ${GNC_FILES__LIB_SOURCES__IMGUI}")
@@ -60,10 +61,15 @@ add_subdirectory("${GNC_DIR__LIBRARY}/LazyDiyDict/")
 
 add_executable(${PROJECT_NAME}
     ${GNC_FILES__SOURCES}
+    ${GNC_FILES__LIB_SOURCES__IMGUI}
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC ${GNC_DIR__INCLUDE})
 target_include_directories(${PROJECT_NAME} PUBLIC ${GNC_DIR__LIB_INCLUDES})
+
+target_link_libraries(${PROJECT_NAME} PUBLIC LazyDiyDict)
+target_link_libraries(${PROJECT_NAME} PUBLIC KeyBindHandler)
+target_link_libraries(${PROJECT_NAME} PUBLIC JsonParser)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
     allegro
