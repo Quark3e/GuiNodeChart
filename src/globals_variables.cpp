@@ -1,7 +1,4 @@
 
-
-// #include "globals_includes.hpp"
-
 #include "globals_variables.hpp"
 
 bool            __ON_TERMINAL   = false;

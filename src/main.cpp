@@ -487,23 +487,6 @@ int main(int argc, char** argv) {
             }
         }
 
-        // try {
-        //     for(size_t i=0; i<_SETTINGS.size(); i++) {
-        //         std::cout << _SETTINGS[i] << " ";
-        //     }
-        //     std::cout << std::endl;
-        // }
-        // catch(const std::exception& e) {
-        //     std::cout << e.what() << '\n';
-        // }
-
-        // for(size_t i=0; i<_SETTINGS.size(); i++) {
-        //     std::cout << std::setw(21) << std::left<< _SETTINGS[i].getKey(0)<<" : ";
-        //     std::cout << _SETTINGS[i].getPtr_idx(0) << " / ";
-        //     (&(*_SETTINGS[i]._getItr(0)));
-        //     std::cout << std::endl;
-        // }
-        // std::cout << std::endl;
 
         ImGui::End();
         //--------------------
