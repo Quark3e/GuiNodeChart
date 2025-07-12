@@ -14,6 +14,7 @@
 #include <sstream>
 #include <vector>
 #include <list>
+#include <cmath>
 
 
 namespace LazyDiyDict {
